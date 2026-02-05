@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salesian College Chadstone - House System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background: #f0f0f0;
+            color: #667eea;
+        }
+
+        nav a.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .scoreboard {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 3rem;
+        }
+
+        .scoreboard h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .houses {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .house-card {
+            padding: 2rem;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+
+        .house-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .house-card.savio {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        .house-card.maroney {
+            background: linear-gradient(135deg, #c31432 0%, #e94057 100%);
+        }
+
+        .house-card.annecy {
+            background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+        }
+
+        .house-card.collinson {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .house-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .house-card .points {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .house-card .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .update-section {
+            background: #f9f9f9;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .update-section h3 {
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .update-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        select, input, button {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #5568d3;
+        }
+
+        .events-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .events-section h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .event-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .event-card:hover {
+            transform: scale(1.05);
+        }
+
+        .event-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Salesian College Chadstone</h1>
+        <p>House System 2026</p>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="athletics.html">House Athletics</a></li>
+            <li><a href="swimming.html">House Swimming</a></li>
+            <li><a href="cross-country.html">House Cross Country</a></li>
+            <li><a href="spelling-bee.html">House Spelling Bee</a></li>
+            <li><a href="chess.html">House Chess</a></li>
+            <li><a href="soccer.html">House Soccer</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="scoreboard">
+            <h2>House Points Scoreboard</h2>
+            <div class="houses">
+                <div class="house-card savio">
+                    <h3>Savio</h3>
+                    <div class="points" id="savio-points">0</div>
+                    <div class="label">POINTS</div>
+                </div>
+                <div class="house-card maroney">
+                    <h3>Maroney</h3>
+                    <div class="points" id="maroney-points">0</div>
+                    <div class="label">POINTS</div>
+                </div>
+                <div class="house-card annecy">
+                    <h3>Annecy</h3>
+                    <div class="points" id="annecy-points">0</div>
+                    <div class="label">POINTS</div>
+                </div>
+                <div class="house-card collinson">
+                    <h3>Collinson</h3>
+                    <div class="points" id="collinson-points">0</div>
+                    <div class="label">POINTS</div>
+                </div>
+            </div>
+
+            <div class="update-section">
+                <h3>Update House Points</h3>
+                <div class="update-form">
+                    <div class="form-row">
+                        <select id="house-select">
+                            <option value="">Select House</option>
+                            <option value="savio">Savio</option>
+                            <option value="maroney">Maroney</option>
+                            <option value="annecy">Annecy</option>
+                            <option value="collinson">Collinson</option>
+                        </select>
+                        <input type="number" id="points-input" placeholder="Points to add/subtract" />
+                        <button onclick="updatePoints()">Update Points</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="events-section">
+            <h2>House Events</h2>
+            <div class="events-grid">
+                <div class="event-card" onclick="window.location.href='athletics.html'">
+                    <h3>🏃 House Athletics</h3>
+                    <p>Track and Field Competition</p>
+                </div>
+                <div class="event-card" onclick="window.location.href='swimming.html'">
+                    <h3>🏊 House Swimming</h3>
+                    <p>Swimming Carnival</p>
+                </div>
+                <div class="event-card" onclick="window.location.href='cross-country.html'">
+                    <h3>🏃‍♂️ House Cross Country</h3>
+                    <p>Distance Running Event</p>
+                </div>
+                <div class="event-card" onclick="window.location.href='spelling-bee.html'">
+                    <h3>📚 House Spelling Bee</h3>
+                    <p>Spelling Competition</p>
+                </div>
+                <div class="event-card" onclick="window.location.href='chess.html'">
+                    <h3>♟️ House Chess</h3>
+                    <p>Chess Tournament</p>
+                </div>
+                <div class="event-card" onclick="window.location.href='soccer.html'">
+                    <h3>⚽ House Soccer</h3>
+                    <p>Football Competition</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load saved points from localStorage
+        function loadPoints() {
+            const houses = ['savio', 'maroney', 'annecy', 'collinson'];
+            houses.forEach(house => {
+                const saved = localStorage.getItem(house + '-points');
+                if (saved !== null) {
+                    document.getElementById(house + '-points').textContent = saved;
+                }
+            });
+        }
+
+        function updatePoints() {
+            const house = document.getElementById('house-select').value;
+            const pointsInput = document.getElementById('points-input').value;
+            
+            if (!house) {
+                alert('Please select a house');
+                return;
+            }
+            
+            if (!pointsInput || pointsInput === '0') {
+                alert('Please enter a points value');
+                return;
+            }
+
+            const points = parseInt(pointsInput);
+            const currentPoints = parseInt(document.getElementById(house + '-points').textContent);
+            const newPoints = currentPoints + points;
+            
+            document.getElementById(house + '-points').textContent = newPoints;
+            localStorage.setItem(house + '-points', newPoints);
+            
+            // Reset form
+            document.getElementById('house-select').value = '';
+            document.getElementById('points-input').value = '';
+            
+            alert(`${house.charAt(0).toUpperCase() + house.slice(1)} points updated successfully!`);
+        }
+
+        // Load points on page load
+        loadPoints();
+    </script>
+</body>
+</html>
